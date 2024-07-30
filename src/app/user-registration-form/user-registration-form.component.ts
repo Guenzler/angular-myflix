@@ -33,16 +33,16 @@ export class UserRegistrationFormComponent implements OnInit {
     console.log('registerUser is called');
     console.log(this.userData);
     this.fetchApiData.userRegistration(this.userData).subscribe((result) => {
-      // Logic for a successful user registration goes here! (To be implemented)
       this.dialogRef.close(); // This will close the modal on success!
       console.log(result);
-      this.snackBar.open(result, 'OK', {
-        duration: 2000
+      this.snackBar.open('Registration was successful, you can login now', 'OK', {
+        duration: 6000
       });
-    }, (result) => {
-      this.snackBar.open(result, 'OK', {
-        duration: 2000
-      });
+    }, (error) => {
+       // Extract the error message if it exists, otherwise use a default message
+       const errorMessage = error?.message || 'An unknown error occurred. Please try again.';
+       console.error('Registration error:', error); // Log error for debugging
+       this.snackBar.open(errorMessage, 'OK', { duration: 4000 });
     });
   }
 

@@ -1,0 +1,11 @@
+<!-- src/app/navigation/navigation.component.html -->
+
+<mat-toolbar color="primary">
+    <span>Movie App</span>
+    <span class="spacer"></span>
+    <nav>
+      <a mat-button routerLink="/movies" >Movies</a>
+      <a mat-button routerLink="/profile" >Profile</a>
+      <button mat-button (click)="logout()" >Logout</button>
+    </nav>
+  </mat-toolbar>

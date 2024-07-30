@@ -1,0 +1,17 @@
+.movie-cards {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.single-card {
+  margin: 10px 10px 10px 10px;
+}
+
+.single-card img {
+  width: 100%;
+  /* Set the desired width */
+  height: 300px;
+  /* Set the desired height */
+  object-fit: cover;
+  /* Ensures the image covers the area, cropping if necessary */
+}

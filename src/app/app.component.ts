@@ -1,28 +1,22 @@
 // src/app/app.component.ts
-import { Component } from '@angular/core';
-import { UserRegistrationFormComponent } from './user-registration-form/user-registration-form.component';
-import { UserLoginFormComponent } from './user-login-form/user-login-form.component';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'angular-myFlix';
-  constructor(public dialog: MatDialog) { }
-  // This is the function that will open the dialog when the signup button is clicked  
-  openUserRegistrationDialog(): void {
-    this.dialog.open(UserRegistrationFormComponent, {
-      // Assigning the dialog a width
-      width: '280px'
-    });
-  }
-  openUserLoginDialog(): void {
-    this.dialog.open(UserLoginFormComponent, {
-      // Assigning the dialog a width
-      width: '280px'
-    });
+  constructor(private router: Router) { }
+
+  ngOnInit(): void {
+    // Check if a user is stored in local storage
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
+    if (user) {
+      // Redirect to the /movies route if user is logged in
+      this.router.navigate(['/movies']);
+    }
   }
 }

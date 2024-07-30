@@ -19,8 +19,8 @@ export class FetchApiDataService {
   }
 
   private getToken(): string {
-    const user = localStorage.getItem('user');
-    return user ? JSON.parse(user).token : '';
+    const token = localStorage.getItem('token');
+    return token ? token : '';
 }
 
   // api call for the user registration endpoint
@@ -60,12 +60,16 @@ export class FetchApiDataService {
   public deleteUser(username: string): Observable<any> {
     console.log(username);
     return this.http.delete(apiUrl + 'users/' + username, {
-      headers: new HttpHeaders(
-        { Authorization: `Bearer ${this.getToken()}`, }
-      )
+      headers: new HttpHeaders({ 
+        Authorization: `Bearer ${this.getToken()}`, 
+      }),
+      responseType: 'text' // Expecting a text response
     }
     ).pipe(
-      map(this.extractResponseData),
+      map(response => {
+        // The response is just a text message, so no need to process further
+        return response;
+      }),
       catchError(this.handleError)
     );
   }
@@ -73,12 +77,13 @@ export class FetchApiDataService {
   // api call for adding movie to favorites
   public addToFavorites(username: string, movieID: string ): Observable<any> {
     console.log(username, movieID);
-    return this.http.post(apiUrl + 'users/' + username + '/' + movieID, {
-      headers: new HttpHeaders(
-        { Authorization: `Bearer ${this.getToken()}`, }
-      )
-    }
-    ).pipe(
+    console.log(apiUrl + 'users/' + username + '/' + movieID);
+    const token = this.getToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    console.log(token);
+    return this.http.post(apiUrl + 'users/' + username + '/' + movieID, null, { headers })
+    .pipe(
       map(this.extractResponseData),
       catchError(this.handleError)
     );
@@ -87,12 +92,10 @@ export class FetchApiDataService {
   // api call for removing movie from favorites
   public removeFromFavorites(username: string, movieID: string ): Observable<any> {
     console.log(username, movieID);
-    return this.http.delete(apiUrl + 'users/' + username + '/' + movieID, {
-      headers: new HttpHeaders(
-        { Authorization: `Bearer ${this.getToken()}`, }
-      )
-    }
-    ).pipe(
+    const token = this.getToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.delete(apiUrl + 'users/' + username + '/' + movieID, { headers })
+    .pipe(
       map(this.extractResponseData),
       catchError(this.handleError)
     );

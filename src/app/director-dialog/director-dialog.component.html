@@ -1,0 +1,12 @@
+<h2 mat-dialog-title>{{data.Director.Name}}</h2>
+<mat-dialog-content>
+  <p>{{data.Director.Bio}}</p>
+  <p>Date of birth: {{data.Director.Birthdate | date: 'yyyy-MM-dd'}}</p>
+  <p *ngIf="data.Director.Deathdate; else noDeathdate">Date of death: {{data.Director.Deathdate | date: 'yyyy-MM-dd'}}</p>
+  <ng-template #noDeathdate>
+    <p>Date of death: -</p>
+  </ng-template>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onClose()">Close</button>
+</mat-dialog-actions>

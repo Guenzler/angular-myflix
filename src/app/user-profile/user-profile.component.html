@@ -1,0 +1,59 @@
+<!-- src/app/user-registration-form/user-profile.component.html -->
+<app-navigation></app-navigation>
+<div class="profile-container">
+  <h2>Your Profile</h2>
+  <p>You can update your profile data with this form.</p>
+  <p>Please input your current password in the passwort field, or input
+    a new password, if you wish to change the password.</p>
+  <form #profileForm="ngForm" (ngSubmit)="updateUser(profileForm)">
+    <mat-form-field appearance="fill" class="profile-form-field">
+      <mat-label>Username</mat-label>
+      <input matInput name="username" [(ngModel)]="userData.username" disabled>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="profile-form-field">
+      <mat-label>Email</mat-label>
+      <input matInput name="email" [(ngModel)]="userData.email" required email>
+      <mat-error *ngIf="profileForm.controls['email']?.invalid && profileForm.controls['email']?.touched">
+        <span *ngIf="profileForm.controls['email']?.errors?.['required']">Email is required</span>
+        <span *ngIf="profileForm.controls['email']?.errors?.['email']">Invalid email format</span>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="profile-form-field">
+      <mat-label>Birthdate</mat-label>
+      <input matInput name="birthdate" [(ngModel)]="userData.birthdate" type="date">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="profile-form-field">
+      <mat-label>Password</mat-label>
+      <input matInput name="password" [(ngModel)]="userData.password" type="password" required>
+      <mat-error *ngIf="profileForm.controls['password']?.invalid && profileForm.controls['password']?.touched">
+        Password is required
+      </mat-error>
+    </mat-form-field>
+
+    <button mat-raised-button class="form-submit-button" color="primary" type="submit">Update</button>
+  </form>
+</div>
+<div class="favorites-container">
+  <h2>Your Favorite Movies</h2>
+  <div class="movie-cards">
+    <mat-card *ngFor="let movie of favoriteMovies;" class="single-card">
+      <img src={{movie.ImagePath}} alt={{movie.Title}} />
+
+      <mat-card-header class="card-headers">
+        <mat-card-title>{{movie.Title}}</mat-card-title>
+        <mat-card-subtitle>Directed by: {{movie.Director.Name}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-actions>
+        <button mat-raised-button (click)="handleRemoveFavoriteClick(movie)" color="primary"
+          style="margin-right: 10px;">
+          Remove from favorites
+        </button>
+      </mat-card-actions>
+
+    </mat-card>
+  </div>
+  <button mat-raised-button color="warn" (click)="openDeregisterModal()" style="margin-top: 30px">Deregister Account</button>
+</div>
