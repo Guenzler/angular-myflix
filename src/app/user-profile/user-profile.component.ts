@@ -7,16 +7,28 @@ import { DeregistrationComponent } from '../deregistration/deregistration.compon
 // This import is used to display notifications back to the user
 import { MatSnackBar } from '@angular/material/snack-bar';
 
+/**
+* The UserProfileComponent displays the userdata.
+* It allows to update userdata, displays the users favorite movies
+* and allows to open a dialog to deregister.
+*/
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.scss'
 })
-
 export class UserProfileComponent implements OnInit {
 
-  // get userdata from local storage, this contains all userdata including favorit movies
+  /**
+  * User data retrieved from local storage, including favorite movies.
+  * @type {any}
+  */
   userData: any = JSON.parse(localStorage.getItem('user') || '{}');
+
+  /**
+  * List of the user's favorite movies.
+  * @type {any[]}
+  */
   favoriteMovies: any[] = [];
 
   constructor(
@@ -25,6 +37,9 @@ export class UserProfileComponent implements OnInit {
     private dialog: MatDialog
   ) { }
 
+  /**
+  * Initializes the component by setting up user data and fetching favorite movies.
+  */
   ngOnInit(): void {
     // Set password to an empty string
     this.userData.password = ''; // Clear the password field
@@ -34,7 +49,11 @@ export class UserProfileComponent implements OnInit {
     }
   }
 
-  // Function to convert ISO date string to yyyy-MM-dd format
+  /**
+  * Converts an ISO date string to yyyy-MM-dd format.
+  * @param dateString - The ISO date string.
+  * @returns The formatted date string.
+  */
   formatDate(dateString: string): string {
     const date = new Date(dateString);
     const year = date.getFullYear();
@@ -43,15 +62,21 @@ export class UserProfileComponent implements OnInit {
     return `${year}-${month}-${day}`;
   }
 
+  /**
+  * Fetches and sets the user's favorite movies.
+  */
   getFavoriteMovies(): void {
     this.fetchApiData.getAllMovies().subscribe((resp: any) => {
       this.favoriteMovies = resp.filter((movie: any) =>
         this.userData.favoriteMovies.includes(movie._id)
       );
-      console.log(this.favoriteMovies);
     });
   }
 
+  /**
+   * Updates the user information.
+   * @param form - The form containing the updated user information.
+   */
   updateUser(form: NgForm): void {
     if (form.valid) {
       const updatedUser = {
@@ -78,10 +103,19 @@ export class UserProfileComponent implements OnInit {
       });
     }
   }
+
+  /**
+  * Handles the click event to remove a movie from the user's favorites.
+  * @param movie - The movie to be removed.
+  */
   handleRemoveFavoriteClick(movie: any): void {
     this.removeFromFavorites(movie._id);
   }
 
+  /**
+  * Removes a movie from the user's favorites.
+  * @param movieID - The ID of the movie to be removed.
+  */
   removeFromFavorites(movieID: string): void {
     let user = JSON.parse(localStorage.getItem("user") || "");
     this.fetchApiData.removeFromFavorites(user.username, movieID).subscribe((updatedUser: any) => {
@@ -93,6 +127,9 @@ export class UserProfileComponent implements OnInit {
     });
   }
 
+  /**
+  * Opens a modal dialog to confirm deregistration.
+  */
   openDeregisterModal(): void {
     const dialogRef = this.dialog.open(DeregistrationComponent, {
       width: '300px'
