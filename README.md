@@ -2,7 +2,7 @@
 
 ## Project description
 This project is the client-side component of a web application developed using Angular CLI. Authenticated users can browse movies and create a list of their favorite movies. The application is a single page application that uses Angular Material.
-The project is currently online at 
+The project is currently online at [https://movieapp.guenzler.net](https://movieapp.guenzler.net)
 
 ## Key Features
 - allow users to register and to log in  
